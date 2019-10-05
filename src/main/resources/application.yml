@@ -1,5 +1,15 @@
 server:
   port: 8080
+logging:
+  config: classpath:log4j2.xml
+devtools:
+  livereload:
+    #是否支持livereload
+    enabled: true
+    port: 35729
+  restart:
+    #是否支持热部署
+    enabled: true
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
