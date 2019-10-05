@@ -35,3 +35,26 @@ build/
 .mvn/
 mvnw
 mvnw.cmd
+
+page/.DS_Store
+page/node_modules
+page/dist
+
+# local env files
+page/.env.local
+page/.env.*.local
+
+# Log files
+page/npm-debug.log*
+page/yarn-debug.log*
+page/yarn-error.log*
+
+# Editor directories and files
+page/.idea
+page/.vscode
+page/*.suo
+page/*.ntvs*
+page/*.njsproj
+page/*.sln
+page/*.sw*
+
