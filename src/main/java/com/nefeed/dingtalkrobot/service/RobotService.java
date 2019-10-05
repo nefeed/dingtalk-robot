@@ -1,6 +1,6 @@
 package com.nefeed.dingtalkrobot.service;
 
-import com.nefeed.dingtalkrobot.entity.UserInfo;
+import com.nefeed.dingtalkrobot.entity.RobotInfo;
 
 import java.util.List;
 
@@ -11,20 +11,20 @@ import java.util.List;
  * @mail nefeed@163.com
  * @time 2019-10-05 18:39
  */
-public interface IUserService {
+public interface RobotService {
     /**
      * 以主键查找对象
      *
      * @param key 主键
      *
-     * @return 用户
+     * @return 机器人
      */
-    UserInfo findByKey(Integer key);
+    RobotInfo findByKey(Integer key);
 
     /**
-     * 遍历所有对象
+     * 遍历所有机器人
      *
-     * @return 用户队列
+     * @return 机器人队列
      */
-    List findAllUser();
+    List<RobotInfo> findAllRobots();
 }

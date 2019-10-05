@@ -8,12 +8,13 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 用户服务实现
  * @author 章华隽
  * @mail nefeed@163.com
  * @time 2019-10-05 18:40
  */
 @Service(value = "userService")
-public class UserServiceImpl implements IUserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserInfoMapper userDao;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List findAllUser(){
-        return  userDao.findAllUser();
+    public List<UserInfo> findAllUsers(){
+        return  userDao.findAllUsers();
     }
 }

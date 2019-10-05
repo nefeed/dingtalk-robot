@@ -53,10 +53,9 @@ public interface UserInfoMapper {
      */
     int updateByPrimaryKey(UserInfo record);
 
-
     /**
      * 遍历所有用户
-     * @return 所有用户队列
+     * @return 所有用户列表
      */
-    List<UserInfo> findAllUser();
+    List<UserInfo> findAllUsers();
 }
