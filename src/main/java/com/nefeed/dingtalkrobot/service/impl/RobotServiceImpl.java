@@ -1,7 +1,8 @@
-package com.nefeed.dingtalkrobot.service;
+package com.nefeed.dingtalkrobot.service.impl;
 
 import com.nefeed.dingtalkrobot.dao.RobotInfoMapper;
 import com.nefeed.dingtalkrobot.entity.RobotInfo;
+import com.nefeed.dingtalkrobot.service.RobotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
 package com.nefeed.dingtalkrobot.controller;
 
+import com.nefeed.dingtalkrobot.controller.base.BaseController;
 import com.nefeed.dingtalkrobot.entity.TeamInfo;
 import com.nefeed.dingtalkrobot.service.TeamService;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = {"/team"})
-public class TeamController {
+public class TeamController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TeamController.class);
 

@@ -5,14 +5,18 @@ CREATE TABLE `user_info` (
                              `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
                              `username` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户名',
                              `title` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '职称',
-                             `user_avatar` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户头像',`role` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '权限',
+                             `user_avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户头像',
+                             `user_access_token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户登录token',
+                             `role` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '权限',
                              `status` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户状态',
                              `last_login_time` int(11) DEFAULT NULL COMMENT '最后登录时间',
+                             `last_login_ip` varchar(128) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '最后登录的ip',
                              `gmt_create` int(11) NOT NULL COMMENT '创建时间（UnixTimestamp）10位秒数',
                              `gmt_modify` int(11) NOT NULL COMMENT '更新时间（UnixTimestamp）10位秒数',
                              `del` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
                              PRIMARY KEY (`user_id`),
-                             UNIQUE KEY `idx_account` (`account`) COMMENT '账号唯一性索引'
+                             UNIQUE KEY `idx_account` (`account`) COMMENT '账号唯一性索引',
+                             UNIQUE KEY `idx_username` (`username`) COMMENT '用户名唯一性索引'
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- 团队表 2019-10-05
 CREATE TABLE `team_info` (

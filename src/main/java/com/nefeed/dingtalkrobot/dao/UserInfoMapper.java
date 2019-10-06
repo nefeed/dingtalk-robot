@@ -58,4 +58,11 @@ public interface UserInfoMapper {
      * @return 所有用户列表
      */
     List<UserInfo> findAllUsers();
+
+    /**
+     * 根据账号查找用户
+     * @param account 账号
+     * @return 用户
+     */
+    UserInfo selectByAccount(String account);
 }

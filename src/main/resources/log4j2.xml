@@ -33,6 +33,13 @@
         <!-- Info日志默认同一文件夹下可以存放的数量,不设置此属性则默认为7个 -->
         <property name="info_max">10</property>
 
+        <!-- biz日志默认存放路径(Info级别日志) -->
+        <property name="biz_fileName">/Users/nefeed/projects/java/dingtalk-robot/logs/biz-service.log</property>
+        <!-- biz日志默认压缩路径,将超过指定文件大小的日志,自动存入按"年月"建立的文件夹下面并进行压缩,作为存档 -->
+        <property name="biz_filePattern">%d{yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log.gz</property>
+        <!-- biz日志默认同一文件夹下可以存放的数量,不设置此属性则默认为7个 -->
+        <property name="biz_max">10</property>
+
         <!-- Warn日志默认存放路径(Warn级别日志) -->
         <property name="warn_fileName">/Users/nefeed/projects/java/dingtalk-robot/logs/warn.log</property>
         <!-- Warn日志默认压缩路径,将超过指定文件大小的日志,自动存入按"年月"建立的文件夹下面并进行压缩,作为存档 -->
@@ -86,6 +93,18 @@
             </Filters>
         </RollingFile>
 
+        <!-- 打印INFO级别的日志到文件 -->
+        <RollingFile name="BIZ-APPENDER" fileName="${biz_fileName}" filePattern="${biz_filePattern}">
+            <PatternLayout pattern="${log_pattern}"/>
+            <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            <DefaultRolloverStrategy max="${biz_max}" />
+            <!-- 匹配INFO级别 -->
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+
         <!-- 打印WARN级别的日志到文件 -->
         <RollingFile name="WarnFile" fileName="${warn_fileName}" filePattern="${warn_filePattern}">
             <PatternLayout pattern="${log_pattern}"/>
@@ -116,6 +135,10 @@
         <!-- 设置对打印sql语句的支持 -->
         <logger name="java.sql" level="debug" additivity="false">
             <appender-ref ref="Console"/>
+        </logger>
+        <!-- 设置对打印sql语句的支持 -->
+        <logger name="BIZ-SERVICE" level="info" additivity="false">
+            <appender-ref ref="BIZ-APPENDER"/>
         </logger>
         <!--建立一个默认的root的logger-->
         <root level="${output_log_level}">

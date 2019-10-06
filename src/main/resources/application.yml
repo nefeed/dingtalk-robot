@@ -11,6 +11,9 @@ devtools:
     #是否支持热部署
     enabled: true
 spring:
+  aop:
+    proxy-target-class: true
+    auto: true
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/dingtalk-robot
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -16,7 +16,6 @@ public interface UserService {
      * 以主键查找对象
      *
      * @param key 主键
-     *
      * @return 用户
      */
     UserInfo findByKey(Integer key);
@@ -27,4 +26,18 @@ public interface UserService {
      * @return 用户队列
      */
     List<UserInfo> findAllUsers();
+
+    /**
+     * 根据账号查找用户
+     */
+    UserInfo findByAccount(String account);
+
+    /**
+     * 登录成功,更新用户
+     *
+     * @param userInfo 用户
+     * @param ip       ip地址
+     * @return 登录成功刷新的accessToken
+     */
+    String loginSuccess(UserInfo userInfo, String ip);
 }

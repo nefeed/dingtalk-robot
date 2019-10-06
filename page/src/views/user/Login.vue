@@ -43,7 +43,7 @@
             </a-input>
           </a-form-item>
         </a-tab-pane>
-        <a-tab-pane key="tab2" tab="手机号登录">
+        <a-tab-pane key="tab2" tab="手机号登录" disabled>
           <a-form-item>
             <a-input size="large" type="text" placeholder="手机号" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]">
               <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
@@ -120,6 +120,7 @@ import md5 from 'md5'
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
+import { formatDate } from '@/utils/util'
 import { getSmsCaptcha, get2step } from '@/api/login'
 
 export default {
@@ -193,7 +194,7 @@ export default {
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           loginParams.password = md5(values.password)
           Login(loginParams)
-            .then((res) => this.loginSuccess(res))
+            .then((res) => this.loginResponse(res))
             .catch(err => this.requestFailed(err))
             .finally(() => {
               state.loginBtn = false
@@ -247,6 +248,33 @@ export default {
         this.loginBtn = false
         this.stepCaptchaVisible = false
       })
+    },
+    loginResponse (res) {
+        console.log(res)
+        if (res.result.success) {
+
+            this.$notification['info']({
+                message: '登录成功',
+                description: `上次登录时间: ${formatDate(res.lastLoginTime)}\n上次登录Ip: ${res.lastLoginIp}`,
+                duration: 4
+            })
+            this.$router.push({path: '/'})
+            // 延迟 1 秒显示欢迎信息
+            setTimeout(() => {
+                this.$notification.success({
+                    message: '欢迎',
+                    description: `${timeFix()}，欢迎回来`
+                })
+            }, 1000)
+            this.isLoginError = false
+        } else {
+            this.isLoginError = true
+            this.$notification['error']({
+                message: '错误',
+                description: `${res.result.resultCode}\n${res.result.resultMsg}`,
+                duration: 4
+            })
+        }
     },
     loginSuccess (res) {
       console.log(res)

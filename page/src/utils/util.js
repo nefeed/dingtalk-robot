@@ -58,3 +58,33 @@ export function removeLoadingAnimate (id = '', timeout = 1500) {
     document.body.removeChild(document.getElementById(id))
   }, timeout)
 }
+
+
+/**
+ * 通过时间戳返回yyyy-MM-dd HH:mm:ss
+ * @param timestamp
+ * @returns {string}
+ */
+export function formatDate(param) {
+  var time = new Date(timestamp * 1000)
+  var y = time.getFullYear()
+  var m = time.getMonth() + 1
+  var d = time.getDate()
+  var h = time.getHours()
+  var mm = time.getMinutes()
+  var s = time.getSeconds()
+  return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s)
+}
+
+export function  add0(m){
+  return m < 10 ? '0' + m : m
+}
+
+/**
+ * 通过HH:mm:ss字符串返回时间戳
+ * @param timestr
+ * @returns {string}
+ */
+export function  formatTimeStr(timestr) {
+  return (new Date(timestr)).getTime()+''
+}
