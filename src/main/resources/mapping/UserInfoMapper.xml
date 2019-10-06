@@ -208,6 +208,6 @@
   </update>
   <!-- 遍历所有用户 -->
   <select id="findAllUsers" resultType="com.nefeed.dingtalkrobot.entity.UserInfo">
-    select * from user_info
+    select <include refid="Base_Column_List" /> from user_info
   </select>
 </mapper>

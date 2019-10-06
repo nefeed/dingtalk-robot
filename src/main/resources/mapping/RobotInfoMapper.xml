@@ -184,6 +184,6 @@
   </update>
   <!-- 遍历所有机器人 -->
   <select id="findAllRobots" resultType="com.nefeed.dingtalkrobot.entity.RobotInfo">
-    select * from robot_info
+    select <include refid="Base_Column_List" /> from robot_info
   </select>
 </mapper>

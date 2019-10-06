@@ -160,6 +160,8 @@
   </update>
   <!-- 遍历所有团队 -->
   <select id="findAllTeams" resultType="com.nefeed.dingtalkrobot.entity.TeamInfo">
-    select * from team_info
+    select
+        <include refid="Base_Column_List" />
+    from team_info
   </select>
 </mapper>
