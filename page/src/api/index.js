@@ -1,11 +1,11 @@
 const api = {
-  Login: '/auth/login',
-  Logout: '/auth/logout',
-  ForgePassword: '/auth/forge-password',
-  Register: '/auth/register',
-  twoStepCode: '/auth/2step-code',
-  SendSms: '/account/sms',
-  SendSmsErr: '/account/sms_err',
+  Login: '/user/login',
+  Logout: '/user/logout',
+  ForgePassword: '/user/forge-password',
+  Register: '/user/register',
+  twoStepCode: '/user/2step-code',
+  SendSms: '/user/sms',
+  SendSmsErr: '/user/sms_err',
   // get my info
   UserInfo: '/user/info'
 }

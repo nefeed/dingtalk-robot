@@ -13,9 +13,17 @@ public enum ActionLogEventEnum {
      */
     LOGIN("LOGIN", "用户登录"),
     /**
+     * 退出登录
+     */
+    LOGOUT("LOGOUT", "退出登录"),
+    /**
      * 注册
      */
     REGISTER("REGISTER", "用户注册"),
+    /**
+     * 用户信息查询
+     */
+    USER_INFO_QUERY("USER_INFO_QUERY", "用户信息查询"),
     ;
 
     /**
