@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import axios from 'axios'
+import qs from 'qs'
 import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
-import { VueAxios } from './axios'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import {
+  VueAxios
+} from './axios'
+import {
+  ACCESS_TOKEN
+} from '@/store/mutation-types'
+
+Vue.prototype.$qs = qs
 
 // 创建 axios 实例
 const service = axios.create({
@@ -40,6 +47,12 @@ const err = (error) => {
 
 // request interceptor
 service.interceptors.request.use(config => {
+  config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+  if (config.method === 'post') {
+    config.data = qs.stringify({
+      ...config.data
+    })
+  }
   const token = Vue.ls.get(ACCESS_TOKEN)
   if (token) {
     config.headers['Access-Token'] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
@@ -49,8 +62,13 @@ service.interceptors.request.use(config => {
 
 // response interceptor
 service.interceptors.response.use((response) => {
-  return response.data
-}, err)
+  if (response.data.result.success) {
+    return response.data
+  }
+  return Promise.reject(response)
+}, (err) => {
+  return Promise.reject(err)
+})
 
 const installer = {
   vm: {},
