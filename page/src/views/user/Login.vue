@@ -244,14 +244,12 @@ export default {
 
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
         if (!err) {
-          console.log('login form', values)
           const loginParams = { ...values }
           delete loginParams.account
           loginParams[!state.loginType ? 'email' : 'account'] = values.account
           loginParams.password = md5(values.password)
           Login(loginParams)
             .then((res) => {
-              console.log('结果:' + res)
               if (((res || {}).result || {}).success) {
                 this.loginSuccess(res)
               } else {
@@ -259,7 +257,6 @@ export default {
               }
             })
             .catch(err => {
-              console.log('login错误: ' + JSON.stringify(err))
               this.requestFailed(err)
             })
             .finally(() => {
@@ -316,7 +313,6 @@ export default {
       })
     },
     loginSuccess (res) {
-      console.log(res)
       // check res.homePage define, set $router.push name res.homePage
       // Why not enter onComplete
       /*
@@ -328,9 +324,10 @@ export default {
         })
       })
       */
+      const lastLoginTime = timeUtil.formatDate(res.lastLoginTime)
       this.$notification['info']({
         message: '登录成功',
-        description: `上次登录时间: ${timeUtil.formatDate(res.lastLoginTime)}\n上次登录Ip: ${res.lastLoginIp}`,
+        description: `上次登录时间: ${lastLoginTime}\n上次登录Ip: ${res.lastLoginIp}`,
         duration: 4
       })
       this.$router.push({ path: '/' })

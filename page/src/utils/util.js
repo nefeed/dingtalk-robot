@@ -59,13 +59,12 @@ export function removeLoadingAnimate (id = '', timeout = 1500) {
   }, timeout)
 }
 
-
 /**
  * 通过时间戳返回yyyy-MM-dd HH:mm:ss
  * @param timestamp
  * @returns {string}
  */
-export function formatDate(param) {
+export function formatDate (timestamp) {
   var time = new Date(timestamp * 1000)
   var y = time.getFullYear()
   var m = time.getMonth() + 1
@@ -73,10 +72,10 @@ export function formatDate(param) {
   var h = time.getHours()
   var mm = time.getMinutes()
   var s = time.getSeconds()
-  return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s)
+  return y + '-' + add0(m) + '-' + add0(d) + ' ' + add0(h) + ':' + add0(mm) + ':' + add0(s)
 }
 
-export function  add0(m){
+export function add0 (m) {
   return m < 10 ? '0' + m : m
 }
 
@@ -85,6 +84,6 @@ export function  add0(m){
  * @param timestr
  * @returns {string}
  */
-export function  formatTimeStr(timestr) {
-  return (new Date(timestr)).getTime()+''
+export function formatTimeStr (timestr) {
+  return (new Date(timestr)).getTime() + ''
 }
