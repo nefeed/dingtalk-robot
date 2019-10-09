@@ -4,13 +4,14 @@ import com.alibaba.druid.util.StringUtils;
 import com.nefeed.dingtalkrobot.enums.ResultCodeEnum;
 import com.nefeed.dingtalkrobot.pojo.base.BaseResponse;
 import com.nefeed.dingtalkrobot.pojo.base.BaseResult;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author 章华隽
  * @mail nefeed@163.com
  * @time 2019-10-06 11:42
  */
-public class BaseController {
+public abstract class BaseController {
 
     /**
      * 组装失败结果
