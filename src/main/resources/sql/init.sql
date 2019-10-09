@@ -58,7 +58,7 @@ CREATE TABLE `robot_info` (
                               PRIMARY KEY (`robot_id`),
                               KEY `idx_teamId` (`team_id`) COMMENT '团队id索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
--- 定时任务表 2019-10-05
+-- 自定义任务表 2019-10-05
 CREATE TABLE `task_info` (
                              `task_id` int(32) NOT NULL AUTO_INCREMENT COMMENT '任务id',
                              `robot_id` int(32) NOT NULL COMMENT '机器人id',
@@ -89,4 +89,13 @@ CREATE TABLE `action_log` (
                               KEY `idx_userId` (`user_id`) COMMENT '用户id索引',
                               KEY `idx_teamId` (`team_id`) COMMENT '团队id索引',
                               KEY `idx_robotId` (`robot_id`) COMMENT '机器人id索引'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- 定时执行器表 2019-10-05
+CREATE TABLE `cron_info` (
+                             `cron_id` int(32) NOT NULL AUTO_INCREMENT COMMENT '定时执行器id',
+                             `cron` varchar(255) NOT NULL COMMENT '定时执行器表达式',
+                             `gmt_create` int(11) NOT NULL COMMENT '创建时间（UnixTimestamp）10位秒数',
+                             `gmt_modify` int(11) NOT NULL COMMENT '更新时间（UnixTimestamp）10位秒数',
+                             `del` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
+                             PRIMARY KEY (`cron_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
