@@ -40,6 +40,13 @@
         <!-- biz日志默认同一文件夹下可以存放的数量,不设置此属性则默认为7个 -->
         <property name="biz_max">10</property>
 
+        <!-- 定时器: 日志默认存放路径(Info级别日志) -->
+        <property name="scheduleTask_fileName">/Users/nefeed/projects/java/dingtalk-robot/logs/schedule-task.log</property>
+        <!-- 定时器: 日志默认压缩路径,将超过指定文件大小的日志,自动存入按"年月"建立的文件夹下面并进行压缩,作为存档 -->
+        <property name="scheduleTask_filePattern">%d{yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log.gz</property>
+        <!-- 定时器: 日志默认同一文件夹下可以存放的数量,不设置此属性则默认为7个 -->
+        <property name="scheduleTask_max">10</property>
+
         <!-- Warn日志默认存放路径(Warn级别日志) -->
         <property name="warn_fileName">/Users/nefeed/projects/java/dingtalk-robot/logs/warn.log</property>
         <!-- Warn日志默认压缩路径,将超过指定文件大小的日志,自动存入按"年月"建立的文件夹下面并进行压缩,作为存档 -->
@@ -93,16 +100,17 @@
             </Filters>
         </RollingFile>
 
-        <!-- 打印INFO级别的日志到文件 -->
+        <!-- 业务: 打印INFO级别的日志到文件 -->
         <RollingFile name="BIZ-APPENDER" fileName="${biz_fileName}" filePattern="${biz_filePattern}">
             <PatternLayout pattern="${log_pattern}"/>
             <SizeBasedTriggeringPolicy size="${every_file_size}"/>
             <DefaultRolloverStrategy max="${biz_max}" />
-            <!-- 匹配INFO级别 -->
-            <Filters>
-                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
-            </Filters>
+        </RollingFile>
+        <!-- 定时器: 打印INFO级别的日志到文件 -->
+        <RollingFile name="SCHEDULE-TASK-APPENDER" fileName="${scheduleTask_fileName}" filePattern="${scheduleTask_filePattern}">
+            <PatternLayout pattern="${log_pattern}"/>
+            <SizeBasedTriggeringPolicy size="${every_file_size}"/>
+            <DefaultRolloverStrategy max="${scheduleTask_max}" />
         </RollingFile>
 
         <!-- 打印WARN级别的日志到文件 -->
@@ -139,6 +147,10 @@
         <!-- 设置对打印sql语句的支持 -->
         <logger name="BIZ-SERVICE" level="info" additivity="false">
             <appender-ref ref="BIZ-APPENDER"/>
+        </logger>
+        <!-- 设置对打印sql语句的支持 -->
+        <logger name="SCHEDULE-TASK" level="info" additivity="false">
+            <appender-ref ref="SCHEDULE-TASK-APPENDER"/>
         </logger>
         <!--建立一个默认的root的logger-->
         <root level="${output_log_level}">

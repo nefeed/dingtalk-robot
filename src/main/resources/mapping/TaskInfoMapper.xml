@@ -193,4 +193,8 @@
       del = #{del,jdbcType=BIT}
     WHERE task_id = #{taskId,jdbcType=INTEGER}
   </update>
+  <!-- 遍历所有待执行的任务 -->
+  <select id="findStandbyTaskList" parameterType="java.lang.Integer" resultType="com.nefeed.dingtalkrobot.entity.TaskInfo">
+    SELECT <include refid="Base_Column_List" /> FROM task_info WHERE expect_run_time <![CDATA[<=]]> #{now,jdbcType=INTEGER} AND del = 0
+  </select>
 </mapper>

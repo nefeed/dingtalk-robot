@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class StaticScheduleTask {
 
     /** logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(StaticScheduleTask.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger("SCHEDULE-TASK");
 
 //    @Scheduled(cron = "0/5 * * * * ?")
 //    private void configureTasks() {

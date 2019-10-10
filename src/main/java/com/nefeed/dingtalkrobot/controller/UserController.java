@@ -55,24 +55,24 @@ public class UserController extends BaseController {
     @RequestMapping(value = {"/login"}, produces = {"application/json;charset=UTF-8"}, method = RequestMethod.POST)
     public BaseResponse login(HttpServletRequest request,
                               @RequestParam String account, @RequestParam String password) {
-        LogUtil.info(ActionLogEventEnum.LOGIN, "account: {}.", account);
+        LogUtil.info(ActionLogEventEnum.LOGIN, "account: %s.", account);
         UserInfo userInfo = userService.findByAccount(account);
         if (userInfo == null) {
-            LogUtil.warn(ActionLogEventEnum.LOGIN, "账号不存在: {}.", account);
+            LogUtil.warn(ActionLogEventEnum.LOGIN, "账号不存在: %s.", account);
             return buildErrorResponse(ResultCodeEnum.ACCOUNT_NOT_EXISTS);
         }
         if (Objects.equals(userInfo.getPassword(), password)) {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setLastLoginTime(userInfo.getLastLoginTime());
             loginResponse.setLastLoginIp(userInfo.getLastLoginIp());
-            LogUtil.info(ActionLogEventEnum.LOGIN, "登录成功: {}, 上次登录时间: {}, 上次登录IP: {}.",
+            LogUtil.info(ActionLogEventEnum.LOGIN, "登录成功: %s, 上次登录时间: %s, 上次登录IP: %s.",
                     account, DateUtil.parseTimestamp(userInfo.getLastLoginTime()), userInfo.getLastLoginIp());
             String accessToken = userService.loginSuccess(userInfo, IpUtil.getIpAddr(request));
             loginResponse.setAccessToken(accessToken);
             initSuccessResponse(loginResponse);
             return loginResponse;
         }
-        LogUtil.warn(ActionLogEventEnum.LOGIN, "密码错误: {}.", account);
+        LogUtil.warn(ActionLogEventEnum.LOGIN, "密码错误: %s.", account);
         return buildErrorResponse(ResultCodeEnum.WRONG_PASSWORD);
     }
 

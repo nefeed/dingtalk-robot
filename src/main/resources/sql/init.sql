@@ -72,7 +72,8 @@ CREATE TABLE `task_info` (
                              `gmt_modify` int(11) NOT NULL COMMENT '更新时间（UnixTimestamp）10位秒数',
                              `del` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
                              PRIMARY KEY (`task_id`),
-                             KEY `idx_robotId` (`robot_id`) COMMENT '机器人id索引'
+                             KEY `idx_robotId` (`robot_id`) COMMENT '机器人id索引',
+                             KEY `idx_expectRunTime_Del` (`expect_run_time`,`del`) COMMENT '寻找待执行任务索引'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 -- 创建使用记录表 2019-10-05
 CREATE TABLE `action_log` (

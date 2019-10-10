@@ -24,6 +24,10 @@ public enum ActionLogEventEnum {
      * 用户信息查询
      */
     USER_INFO_QUERY("USER_INFO_QUERY", "用户信息查询"),
+    /**
+     * 执行定时任务
+     */
+    RUN_TASK("RUN_TASK", "执行定时任务"),
     ;
 
     /**

@@ -67,6 +67,18 @@ public class BizContextHolder {
     }
 
     /**
+     * 系统时间
+     *
+     * @return 系统时间(unix_timestamp秒数)
+     */
+    public static int getUnixTimestamp() {
+        if (null == get()) {
+            return (int) (System.currentTimeMillis() / 1000L);
+        }
+        return (int) (get().getTime().getTime() / 1000L);
+    }
+
+    /**
      * 操作类型
      *
      * @return 操作类型
