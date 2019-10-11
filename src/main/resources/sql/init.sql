@@ -67,7 +67,7 @@ CREATE TABLE `task_info` (
                              `type` varchar(32) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '任务类型',
                              `run_times` int(32) NOT NULL DEFAULT '0' COMMENT '执行次数',
                              `expect_run_time` int(11) DEFAULT NULL COMMENT '预期执行时间',
-                             `schedule` varchar(64) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '执行规则',
+                             `schedule` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '执行规则',
                              `gmt_create` int(11) NOT NULL COMMENT '创建时间（UnixTimestamp）10位秒数',
                              `gmt_modify` int(11) NOT NULL COMMENT '更新时间（UnixTimestamp）10位秒数',
                              `del` tinyint(1) NOT NULL DEFAULT '0' COMMENT '删除标记',

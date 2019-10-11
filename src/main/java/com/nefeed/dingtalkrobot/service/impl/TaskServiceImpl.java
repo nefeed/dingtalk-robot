@@ -41,7 +41,8 @@ public class TaskServiceImpl implements TaskService {
         }
         RobotInfo robot = robotService.findByKey(task.getRobotId());
         if (robot.getDel()) {
-            LogUtil.error(ActionLogEventEnum.RUN_TASK, "机器人[%d]已禁用.", robot.getRobotId());
+            LogUtil.warn(ActionLogEventEnum.RUN_TASK, "定时任务[%d]仍生效, 但机器人[%d]已禁用.", task.getTaskId(), robot.getRobotId());
         }
+
     }
 }

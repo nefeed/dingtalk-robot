@@ -1,5 +1,7 @@
 package com.nefeed.dingtalkrobot.utils;
 
+import com.alibaba.druid.util.StringUtils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -11,6 +13,7 @@ import java.util.Date;
 public class DateUtil {
 
     private static final String DATE_FORMAT_NORMAL = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT_YMD = "yyyy-MM-dd";
     private static final SimpleDateFormat NORMAL_FORMAT = new SimpleDateFormat(DATE_FORMAT_NORMAL);
 
     /**
@@ -19,10 +22,25 @@ public class DateUtil {
      * @return 默认的时间格式字符串
      */
     public static String parseDate(Date date) {
+        return parseDate(date, null);
+    }
+
+    /**
+     * 将Date转为默认的时间格式字符串
+     * @param date 时间
+     * @return 默认的时间格式字符串
+     */
+    public static String parseDate(Date date, String format) {
         if (date == null) {
             return null;
         }
-        return NORMAL_FORMAT.format(date);
+        if (StringUtils.isEmpty(format)) {
+            synchronized (NORMAL_FORMAT) {
+                return NORMAL_FORMAT.format(date);
+            }
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        return simpleDateFormat.format(date);
     }
 
     /**
@@ -31,10 +49,19 @@ public class DateUtil {
      * @return 默认的时间格式字符串
      */
     public static String parseTimestamp(Integer timestamp) {
+        return parseTimestamp(timestamp, null);
+    }
+
+    /**
+     * 将Date转为默认的时间格式字符串
+     * @param timestamp 10位时间戳
+     * @return 默认的时间格式字符串
+     */
+    public static String parseTimestamp(Integer timestamp, String format) {
         if (timestamp == null || timestamp == 0) {
             return null;
         }
         Date date = new Date(timestamp * 1000L);
-        return NORMAL_FORMAT.format(date);
+        return parseDate(date, format);
     }
 }

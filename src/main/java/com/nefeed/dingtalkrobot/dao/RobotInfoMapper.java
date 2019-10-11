@@ -58,4 +58,9 @@ public interface RobotInfoMapper {
      * @return 所有团队列表
      */
     List<RobotInfo> findAllRobots();
+
+    /**
+     * 获取生效的机器人
+     */
+    RobotInfo selectActiveByPrimaryKey(Integer robotId);
 }
