@@ -43,6 +43,5 @@ public class TaskServiceImpl implements TaskService {
         if (robot.getDel()) {
             LogUtil.warn(ActionLogEventEnum.RUN_TASK, "定时任务[%d]仍生效, 但机器人[%d]已禁用.", task.getTaskId(), robot.getRobotId());
         }
-
     }
 }

@@ -1,17 +1,12 @@
 package com.nefeed.dingtalkrobot.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nefeed.dingtalkrobot.enums.HolidayEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,35 +63,21 @@ public class HolidayUtil {
      * @return 节假日类型
      */
     private static HolidayEnum requestHolidayEnum(String date) throws IOException {
-        StringBuilder httpUrl = new StringBuilder("http://api.goseek.cn/Tools/holiday");
-        BufferedReader reader = null;
-        String result = null;
-        StringBuffer sbf = new StringBuffer();
-        httpUrl = httpUrl.append("?date=").append(date);
-
+        String httpUrl = "http://api.goseek.cn/Tools/holiday";
+        Map<String, Object> params = new HashMap<>(16);
+        params.put("date", date);
         int value = 0;
+        String httpResult;
         try {
-            URL url = new URL(httpUrl.toString());
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-            InputStream is = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-            String strRead = null;
-            while ((strRead = reader.readLine()) != null) {
-                sbf.append(strRead);
-                sbf.append("\r\n");
-            }
-            reader.close();
-            result = sbf.toString();
-            JSONObject ob = JSONObject.parseObject(result);
-            if (ob != null) {
-                value = Integer.parseInt(ob.getString("data"));
-            }
-        } catch (Exception e) {
+            httpResult = HttpUtil.get(httpUrl, params);
+        } catch (IOException e) {
             e.printStackTrace();
             LOGGER.error("请求节假日信息异常!", e);
             throw e;
+        }
+        JSONObject ob = JSONObject.parseObject(httpResult);
+        if (ob != null) {
+            value = Integer.parseInt(ob.getString("data"));
         }
         HolidayEnum holidayEnum = HolidayEnum.getByValue(value);
         if (holidayEnum == null) {
@@ -104,7 +85,8 @@ public class HolidayUtil {
             return null;
         }
         holidayMap.put(date, holidayEnum);
-        LOGGER.info("获取节假日类型成功，map新增内容: ({}, {})", date, holidayEnum);
+        LOGGER.info("获取节假日类型成功，Map新增内容: ({}, {})", date, holidayEnum);
+        LOGGER.info("节假日记录Map完整内容: [{}]", JSON.toJSONString(holidayMap));
         return holidayEnum;
     }
 }
