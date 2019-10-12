@@ -4,7 +4,7 @@ import com.nefeed.dingtalkrobot.dao.TaskInfoMapper;
 import com.nefeed.dingtalkrobot.entity.RobotInfo;
 import com.nefeed.dingtalkrobot.entity.TaskInfo;
 import com.nefeed.dingtalkrobot.enums.ActionLogEventEnum;
-import com.nefeed.dingtalkrobot.factory.DingtalkRobotHandlerFactory;
+import com.nefeed.dingtalkrobot.handler.DingtalkRobotHandler;
 import com.nefeed.dingtalkrobot.pojo.model.BizContextHolder;
 import com.nefeed.dingtalkrobot.pojo.model.TaskSchedule;
 import com.nefeed.dingtalkrobot.service.RobotService;
@@ -33,7 +33,7 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private RobotService robotService;
     @Autowired
-    private DingtalkRobotHandlerFactory dingtalkRobotHandlerFactory;
+    private DingtalkRobotHandler dingtalkRobotHandler;
 
     @Override
     public List<TaskInfo> findStandbyTaskList() {
@@ -76,16 +76,18 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * 计算下次执行时间
+     *
      * @param preExpectRunTime 上次执行时间
-     * @param schedule 执行周期
+     * @param schedule         执行周期
      * @return 下次执行时间
      * @throws IOException IO异常
      */
+    @Override
     public int calNextExpectRunTime(Integer preExpectRunTime, String schedule) throws IOException {
 
         TaskSchedule taskSchedule = new TaskSchedule(schedule);
         Date date = new Date(preExpectRunTime * 1000L);
-        date = dingtalkRobotHandlerFactory.getObject().calNextExpectRunTime(date, taskSchedule);
+        date = dingtalkRobotHandler.calNextExpectRunTime(date, taskSchedule);
         return (int) (date.getTime() / 1000L);
 
     }

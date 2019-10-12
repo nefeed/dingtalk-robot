@@ -27,7 +27,7 @@ public class HttpUtil {
         StringBuilder httpUrl = new StringBuilder(urlStr);
         String result;
 
-        if (CollectionUtils.isEmpty(params)) {
+        if (!CollectionUtils.isEmpty(params)) {
             httpUrl.append("?");
             for (Map.Entry<String, Object> entry : params.entrySet()) {
                 httpUrl.append(entry.getKey());

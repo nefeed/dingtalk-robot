@@ -2,6 +2,7 @@ package com.nefeed.dingtalkrobot.service;
 
 import com.nefeed.dingtalkrobot.entity.TaskInfo;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,13 +15,25 @@ public interface TaskService {
 
     /**
      * 查找所有待执行的任务
+     *
      * @return 待执行的任务队列
      */
     List<TaskInfo> findStandbyTaskList();
 
     /**
      * 执行任务
+     *
      * @param task 任务
      */
     void runTask(TaskInfo task);
+
+    /**
+     * 计算下次执行时间
+     *
+     * @param preExpectRunTime 上次执行时间
+     * @param schedule         执行周期
+     * @return 下次执行时间
+     * @throws IOException IO异常
+     */
+    int calNextExpectRunTime(Integer preExpectRunTime, String schedule) throws IOException;
 }

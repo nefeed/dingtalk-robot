@@ -18,6 +18,5 @@ import javax.servlet.annotation.WebInitParam;
 
         }
 )
-
 public class DruidStatFilter extends WebStatFilter {
 }
