@@ -31,7 +31,7 @@ public enum TaskScheduleTypeEnum {
     /**
      * 周末执行
      */
-    WEEKEND_DAY("WEEKEND_DAY", "only weekend day(6-7) run task."),
+    WEEKEND("WEEKEND", "only weekend(6-7) run task."),
     ;
 
     /**

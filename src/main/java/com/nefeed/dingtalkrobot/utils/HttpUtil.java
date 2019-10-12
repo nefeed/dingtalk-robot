@@ -1,8 +1,7 @@
 package com.nefeed.dingtalkrobot.utils;
 
 import com.alibaba.fastjson.JSON;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
 import java.io.*;
@@ -17,11 +16,8 @@ import java.util.Map;
  * @author nefeed@163.com
  * @version $Id: HttpUtil.java, v 0.1 2019年10月11日 8:30 下午 章华隽 Exp $
  */
+@Slf4j
 public class HttpUtil {
-    /**
-     * logger
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(HttpUtil.class);
     /**
      * 成功的请求返回码
      */
@@ -58,7 +54,7 @@ public class HttpUtil {
             result = getHttpResult(connection.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
-            LOGGER.error("HTTP GET请求失败!", e);
+            log.error("HTTP GET请求失败!", e);
             throw e;
         }
         return result;
@@ -99,7 +95,7 @@ public class HttpUtil {
             result = getHttpResult(connection.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
-            LOGGER.error("HTTP POST请求失败!", e);
+            log.error("HTTP POST请求失败!", e);
             throw e;
         }
         return result;

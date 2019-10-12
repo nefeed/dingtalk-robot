@@ -1,6 +1,8 @@
 package com.nefeed.dingtalkrobot;
 
+import com.nefeed.dingtalkrobot.utils.HolidayUtil;
 import com.nefeed.dingtalkrobot.utils.HttpUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,8 +14,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.nefeed.dingtalkrobot.utils.HolidayUtil.getDateHolidayEnum;
-
 /**
  * Http的测试类
  *
@@ -22,12 +22,13 @@ import static com.nefeed.dingtalkrobot.utils.HolidayUtil.getDateHolidayEnum;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Slf4j
 public class HttpTests {
     @Test
     public void testGet() {
         // test get
         try {
-            System.out.println("TEST HTTP GET 结果 获取的假日类型: " + getDateHolidayEnum(new Date()));
+            log.debug("TEST HTTP GET 结果 获取的假日类型: " + HolidayUtil.getDateHolidayEnum(new Date()));
         } catch (IOException e) {
             e.printStackTrace();
             Assert.fail(e.toString());
@@ -55,6 +56,6 @@ public class HttpTests {
             Assert.fail(e.toString());
         }
 
-        System.out.println("TEST HTTP POST 结果: " + postResult);
+        log.debug("TEST HTTP POST 结果: " + postResult);
     }
 }
