@@ -50,7 +50,17 @@ public class TaskServiceImpl implements TaskService {
         if (robot.getDel()) {
             LogUtil.warn(ActionLogEventEnum.RUN_TASK, "定时任务[%d]仍生效, 但机器人[%d]已禁用.", task.getTaskId(), robot.getRobotId());
         }
-        // TODO 章华隽 2019-10-12 增加机器人执行
+        try {
+            boolean result = dingtalkRobotHandler.runRobotTask(robot, task.getTaskContent());
+            if (!result) {
+                LogUtil.error(ActionLogEventEnum.RUN_TASK, "定时任务[%d]执行机器人[%d]任务失败.", task.getTaskId(), robot.getRobotId());
+                return;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            LogUtil.error(ActionLogEventEnum.RUN_TASK, "定时任务[%d]执行机器人[%d]任务IO网络处理失败，失败原因: %s.", task.getTaskId(), robot.getRobotId(), e.toString());
+            return;
+        }
 
         afterRunTask(task);
     }
@@ -63,7 +73,7 @@ public class TaskServiceImpl implements TaskService {
     private void afterRunTask(TaskInfo task) {
         task.setRunTimes(task.getRunTimes() + 1);
         try {
-            task.setExpectRunTime(calNextExpectRunTime(task.getExpectRunTime(), task.getSchedule()));
+            task.setExpectRunTime(calNextExpectRunTime(BizContextHolder.getTime(), task.getSchedule()));
         } catch (IOException e) {
             e.printStackTrace();
             LogUtil.error(ActionLogEventEnum.RUN_TASK, "定时任务[%d]计算下次执行时间失败, e: %s.", task.getTaskId(), e.toString());
@@ -77,6 +87,21 @@ public class TaskServiceImpl implements TaskService {
     /**
      * 计算下次执行时间
      *
+     * @param date             计算的起始时间
+     * @param schedule         执行周期
+     * @return 下次执行时间
+     * @throws IOException IO异常
+     */
+    private int calNextExpectRunTime(Date date, String schedule) throws IOException {
+
+        TaskSchedule taskSchedule = new TaskSchedule(schedule);
+        date = dingtalkRobotHandler.calNextExpectRunTime(taskSchedule, date);
+        return (int) (date.getTime() / 1000L);
+    }
+
+    /**
+     * 计算下次执行时间
+     *
      * @param preExpectRunTime 上次执行时间
      * @param schedule         执行周期
      * @return 下次执行时间
@@ -84,12 +109,8 @@ public class TaskServiceImpl implements TaskService {
      */
     @Override
     public int calNextExpectRunTime(Integer preExpectRunTime, String schedule) throws IOException {
-
-        TaskSchedule taskSchedule = new TaskSchedule(schedule);
         Date date = new Date(preExpectRunTime * 1000L);
-        date = dingtalkRobotHandler.calNextExpectRunTime(date, taskSchedule);
-        return (int) (date.getTime() / 1000L);
-
+        return calNextExpectRunTime(date, schedule);
     }
 
     private Date getNextDate(Date date, TaskSchedule taskSchedule) {

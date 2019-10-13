@@ -1,6 +1,7 @@
 package com.nefeed.dingtalkrobot.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
@@ -23,7 +24,14 @@ public class HttpUtil {
      */
     private static final int RESPONSE_SUCCESS_CODE = 200;
 
-    public static String get(String urlStr, Map<String, Object> params) throws IOException {
+    /**
+     * get请求
+     * @param urlStr 请求连接
+     * @param params 请求参数
+     * @return 返回结果
+     * @throws IOException 网络IO异常
+     */
+    public static String get(String urlStr, JSONObject params) throws IOException {
         StringBuilder httpUrl = new StringBuilder(urlStr);
         String result;
 
@@ -60,7 +68,14 @@ public class HttpUtil {
         return result;
     }
 
-    public static String post(String urlStr, Map<String, Object> params) throws IOException {
+    /**
+     * post请求
+     * @param urlStr 请求连接
+     * @param params 请求参数
+     * @return 返回结果
+     * @throws IOException 网络IO异常
+     */
+    public static String post(String urlStr, JSONObject params) throws IOException {
         StringBuilder httpUrl = new StringBuilder(urlStr);
         String result;
         // 请求输出的字节流

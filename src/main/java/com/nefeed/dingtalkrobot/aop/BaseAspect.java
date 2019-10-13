@@ -35,8 +35,9 @@ public abstract class BaseAspect {
         sb.append(targetClass.getCanonicalName())
                 .append("#")
                 .append(methodName)
+                .append(", 请求参数: ")
                 .append(JSON.toJSONString(logArgs))
-                .append(", ")
+                .append(", 返回参数: ")
                 .append(object);
         return object;
     }

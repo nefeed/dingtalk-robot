@@ -1,7 +1,10 @@
 package com.nefeed.dingtalkrobot.factory;
 
+import com.nefeed.dingtalkrobot.enums.RobotTypeEnum;
 import com.nefeed.dingtalkrobot.enums.TaskScheduleTypeEnum;
 import com.nefeed.dingtalkrobot.handler.DingtalkRobotHandler;
+import com.nefeed.dingtalkrobot.handler.robot.GetRobotTaskHandler;
+import com.nefeed.dingtalkrobot.handler.robot.PostRobotTaskHandler;
 import com.nefeed.dingtalkrobot.handler.time.*;
 import org.springframework.beans.factory.FactoryBean;
 
@@ -17,6 +20,7 @@ public class DingtalkRobotHandlerFactory implements FactoryBean<DingtalkRobotHan
     @Override
     public DingtalkRobotHandler getObject() {
         DingtalkRobotHandler dingtalkRobotHandler = new DingtalkRobotHandler();
+        // 填充预期执行时间计算执行器
         Objects.requireNonNull(dingtalkRobotHandler)
                 .putExpectRunTimeHandler(TaskScheduleTypeEnum.EVERYDAY,
                         new EverydayExpectRunTimeHandler());
@@ -35,6 +39,14 @@ public class DingtalkRobotHandlerFactory implements FactoryBean<DingtalkRobotHan
         Objects.requireNonNull(dingtalkRobotHandler)
                 .putExpectRunTimeHandler(TaskScheduleTypeEnum.WEEKEND,
                         new WeekendExpectRunTimeHandler());
+
+        // 填充机器人任务执行器
+        Objects.requireNonNull(dingtalkRobotHandler)
+                .putRobotTaskHandler(RobotTypeEnum.GET,
+                        new GetRobotTaskHandler());
+        Objects.requireNonNull(dingtalkRobotHandler)
+                .putRobotTaskHandler(RobotTypeEnum.POST,
+                        new PostRobotTaskHandler());
         return dingtalkRobotHandler;
     }
 

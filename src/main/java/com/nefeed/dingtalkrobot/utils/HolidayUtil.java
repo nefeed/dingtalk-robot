@@ -62,7 +62,7 @@ public class HolidayUtil {
      */
     private static HolidayEnum requestHolidayEnum(String date) throws IOException {
         String httpUrl = "http://api.goseek.cn/Tools/holiday";
-        Map<String, Object> params = new HashMap<>(16);
+        JSONObject params = new JSONObject();
         params.put("date", date);
         int value = 0;
         String httpResult;

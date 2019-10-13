@@ -1,5 +1,6 @@
 package com.nefeed.dingtalkrobot;
 
+import com.alibaba.fastjson.JSONObject;
 import com.nefeed.dingtalkrobot.utils.HolidayUtil;
 import com.nefeed.dingtalkrobot.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class HttpTests {
     @Test
     public void testPost() {
         // test post
-        Map<String, Object> params = new HashMap<>(16);
+        JSONObject params = new JSONObject();
         params.put("msgtype", "text");
         Map<String, Object> text = new HashMap<>(16);
         params.put("text", text);
