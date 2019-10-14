@@ -5,6 +5,7 @@ import com.nefeed.dingtalkrobot.entity.RobotInfo;
 import com.nefeed.dingtalkrobot.entity.TaskInfo;
 import com.nefeed.dingtalkrobot.enums.ActionLogEventEnum;
 import com.nefeed.dingtalkrobot.handler.DingtalkRobotHandler;
+import com.nefeed.dingtalkrobot.pojo.model.BizContext;
 import com.nefeed.dingtalkrobot.pojo.model.BizContextHolder;
 import com.nefeed.dingtalkrobot.pojo.model.TaskSchedule;
 import com.nefeed.dingtalkrobot.service.RobotService;
@@ -42,7 +43,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Async("asyncServiceExecutor")
-    public void runTask(TaskInfo task) {
+    public void runTask(BizContext preBizContext, TaskInfo task) {
+        BizContextHolder.set(preBizContext);
         if (task.getRobotId() == null) {
             LogUtil.error(ActionLogEventEnum.RUN_TASK, "定时任务[%d]未绑定机器人.", task.getTaskId());
         }

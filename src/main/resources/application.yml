@@ -1,7 +1,5 @@
 server:
   port: 8080
-logging:
-  config: classpath:log4j2.xml
 devtools:
   livereload:
     #是否支持livereload
@@ -11,14 +9,14 @@ devtools:
     #是否支持热部署
     enabled: true
 spring:
+  profiles:
+    # 使用的配置文件
+    active: dev
   aop:
     proxy-target-class: true
     auto: true
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/dingtalk-robot
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       # 初始化大小，最小，最大

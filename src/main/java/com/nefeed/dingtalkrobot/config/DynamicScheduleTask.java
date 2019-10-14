@@ -83,6 +83,6 @@ public class DynamicScheduleTask implements SchedulingConfigurer {
             LogUtil.warn(LOGGER_SCHEDULE_TASK, "没有需要执行的定时任务!");
             return;
         }
-        standByTaskList.forEach(it -> taskService.runTask(it));
+        standByTaskList.forEach(it -> taskService.runTask(BizContextHolder.get(), it));
     }
 }

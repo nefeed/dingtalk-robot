@@ -1,6 +1,7 @@
 package com.nefeed.dingtalkrobot.service;
 
 import com.nefeed.dingtalkrobot.entity.TaskInfo;
+import com.nefeed.dingtalkrobot.pojo.model.BizContext;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,9 +24,10 @@ public interface TaskService {
     /**
      * 执行任务
      *
-     * @param task 任务
+     * @param preBizContext 调用异步执行task的上下文信息
+     * @param task          任务
      */
-    void runTask(TaskInfo task);
+    void runTask(BizContext preBizContext, TaskInfo task);
 
     /**
      * 计算下次执行时间
