@@ -91,7 +91,7 @@ public class TaskTests {
         unixTimestamp = unixTimestamp + 24 * 60 * 60;
         result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-14 00:00:30
-        Assert.assertEquals(result, 1571068830);
+        Assert.assertEquals(result, 1570982430);
     }
 
     @Test

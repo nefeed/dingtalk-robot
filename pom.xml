@@ -133,6 +133,23 @@
                     <include>**/*.xml</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>generatorConfig.xml</exclude>
+                    <exclude>application-dev.yml</exclude>
+                    <exclude>application-release.yml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>application-${profiles.active}.yml</include>
+                    <include>application.yml</include>
+                </includes>
+            </resource>
         </resources>
     </build>
 
@@ -144,13 +161,15 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <activeProfile>dev</activeProfile>
+                <profiles.active>dev</profiles.active>
+                <maven.test.skip>true</maven.test.skip>
             </properties>
         </profile>
         <profile>
             <id>release</id>
             <properties>
-                <activeProfile>release</activeProfile>
+                <profiles.active>release</profiles.active>
+                <maven.test.skip>true</maven.test.skip>
             </properties>
         </profile>
     </profiles>
