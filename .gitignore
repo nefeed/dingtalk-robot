@@ -8,6 +8,7 @@ logs/
 src/com/
 src/resources
 **/application-release.yml
+**/log4j2-release.xml
 
 ### STS ###
 .apt_generated
