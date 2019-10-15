@@ -14,6 +14,7 @@ Vue.prototype.$qs = qs
 
 // 创建 axios 实例
 const service = axios.create({
+  // TODO 修改为指定服务器域名
   baseURL: 'http://127.0.0.1:8080',
   timeout: 6000 // 请求超时时间
 })

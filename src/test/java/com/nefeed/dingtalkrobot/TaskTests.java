@@ -29,11 +29,11 @@ public class TaskTests {
         Integer unixTimestamp = 1570879980;
         String schedule = "EVERYDAY 30 * * * * ?";
         int result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
-        Assert.assertEquals(result, unixTimestamp + 30);
+        Assert.assertEquals(unixTimestamp + 30, result);
 
         unixTimestamp = unixTimestamp + 24 * 60 * 60;
         result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
-        Assert.assertEquals(result, unixTimestamp + 30);
+        Assert.assertEquals(unixTimestamp + 30, result);
     }
 
     @Test
@@ -42,12 +42,12 @@ public class TaskTests {
         Integer unixTimestamp = 1570879980;
         String schedule = "WORKDAY 30 * * * * ?";
         int result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
-        Assert.assertEquals(result, unixTimestamp + 30);
+        Assert.assertEquals(unixTimestamp + 30, result);
 
         unixTimestamp = unixTimestamp + 24 * 60 * 60;
         result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-14 00:00:30
-        Assert.assertEquals(result, 1570982430);
+        Assert.assertEquals(1570982430, result);
     }
 
     @Test
@@ -56,12 +56,12 @@ public class TaskTests {
         Integer unixTimestamp = 1570879980;
         String schedule = "LAST_WORKDAY 30 * * * * ?";
         int result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
-        Assert.assertEquals(result, unixTimestamp + 30);
+        Assert.assertEquals(unixTimestamp + 30, result);
 
         unixTimestamp = unixTimestamp + 24 * 60 * 60;
         result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-18 00:00:30
-        Assert.assertEquals(result, 1571328030);
+        Assert.assertEquals(1571328030, result);
     }
 
     @Test
@@ -71,12 +71,12 @@ public class TaskTests {
         String schedule = "HOLIDAY 30 * * * * ?";
         int result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-13 00:00:30
-        Assert.assertEquals(result, 1570896030);
+        Assert.assertEquals(1570896030, result);
 
         unixTimestamp = unixTimestamp + 24 * 60 * 60;
         result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-13 19:33:30
-        Assert.assertEquals(result, 1570966410);
+        Assert.assertEquals(1570966410, result);
     }
 
     @Test
@@ -86,12 +86,12 @@ public class TaskTests {
         String schedule = "WEEKDAY 30 * * * * ?";
         int result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-14 00:00:30
-        Assert.assertEquals(result, 1570982430);
+        Assert.assertEquals(1570982430, result);
 
         unixTimestamp = unixTimestamp + 24 * 60 * 60;
         result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-14 00:00:30
-        Assert.assertEquals(result, 1570982430);
+        Assert.assertEquals(1570982430, result);
     }
 
     @Test
@@ -101,11 +101,11 @@ public class TaskTests {
         String schedule = "WEEKEND 30 * * * * ?";
         int result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-12 19:33:30
-        Assert.assertEquals(result, unixTimestamp + 30);
+        Assert.assertEquals(unixTimestamp + 30, result);
 
         unixTimestamp = unixTimestamp + 2 * 24 * 60 * 60;
         result = taskService.calNextExpectRunTime(unixTimestamp, schedule);
         // 2019-10-19 00:00:30
-        Assert.assertEquals(result, 1571414430);
+        Assert.assertEquals(1571414430, result);
     }
 }
