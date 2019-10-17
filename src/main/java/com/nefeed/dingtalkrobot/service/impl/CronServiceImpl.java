@@ -1,5 +1,6 @@
 package com.nefeed.dingtalkrobot.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.nefeed.dingtalkrobot.dao.CronInfoMapper;
 import com.nefeed.dingtalkrobot.entity.CronInfo;
 import com.nefeed.dingtalkrobot.service.CronService;
@@ -20,9 +21,15 @@ public class CronServiceImpl implements CronService {
     @Autowired
     private CronInfoMapper cronDao;
 
+    private String activeCron;
+
     @Override
     public String findActiveCron() {
+        if (!StringUtils.isEmpty(activeCron)) {
+            return activeCron;
+        }
         CronInfo cronInfo = cronDao.findActiveOne();
-        return Optional.ofNullable(cronInfo).orElse(new CronInfo()).getCron();
+        activeCron = Optional.ofNullable(cronInfo).orElse(new CronInfo()).getCron();
+        return activeCron;
     }
 }

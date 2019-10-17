@@ -8,8 +8,10 @@ import com.nefeed.dingtalkrobot.handler.DingtalkRobotHandler;
 import com.nefeed.dingtalkrobot.pojo.model.BizContext;
 import com.nefeed.dingtalkrobot.pojo.model.BizContextHolder;
 import com.nefeed.dingtalkrobot.pojo.model.TaskSchedule;
+import com.nefeed.dingtalkrobot.service.ActionLogService;
 import com.nefeed.dingtalkrobot.service.RobotService;
 import com.nefeed.dingtalkrobot.service.TaskService;
+import com.nefeed.dingtalkrobot.utils.DateUtil;
 import com.nefeed.dingtalkrobot.utils.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -34,11 +36,14 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private RobotService robotService;
     @Autowired
+    private ActionLogService actionLogService;
+    @Autowired
     private DingtalkRobotHandler dingtalkRobotHandler;
 
     @Override
     public List<TaskInfo> findStandbyTaskList() {
-        return taskDao.findStandbyTaskList(BizContextHolder.getUnixTimestamp());
+        // 加1s避免机器时间偏差
+        return taskDao.findStandbyTaskList(BizContextHolder.getUnixTimestamp() + 1);
     }
 
     @Override
@@ -55,7 +60,10 @@ public class TaskServiceImpl implements TaskService {
         try {
             boolean result = dingtalkRobotHandler.runRobotTask(robot, task.getTaskContent());
             if (!result) {
-                LogUtil.error(ActionLogEventEnum.RUN_TASK, "定时任务[%d]执行机器人[%d]任务失败.", task.getTaskId(), robot.getRobotId());
+                String log = String.format("定时任务[%d]执行机器人[%d]任务失败.", task.getTaskId(), robot.getRobotId());
+                LogUtil.error(ActionLogEventEnum.RUN_TASK, log);
+                actionLogService.registerActionLog(ActionLogEventEnum.RUN_TASK, null, robot.getTeamId(), robot.getRobotId(),
+                        log);
                 return;
             }
         } catch (IOException e) {
@@ -64,15 +72,16 @@ public class TaskServiceImpl implements TaskService {
             return;
         }
 
-        afterRunTask(task);
+        afterRunTask(task, robot);
     }
 
     /**
      * 执行定时任务后,更新定时任务信息
      *
-     * @param task 定时任务
+     * @param task  定时任务
+     * @param robot 机器人
      */
-    private void afterRunTask(TaskInfo task) {
+    private void afterRunTask(TaskInfo task, RobotInfo robot) {
         task.setRunTimes(task.getRunTimes() + 1);
         try {
             task.setExpectRunTime(calNextExpectRunTime(BizContextHolder.getTime(), task.getSchedule()));
@@ -84,13 +93,18 @@ public class TaskServiceImpl implements TaskService {
         }
         task.setGmtModify(BizContextHolder.getUnixTimestamp());
         taskDao.updateByPrimaryKeySelective(task);
+
+        String log = String.format("定时任务[%d]执行机器人[%d]任务成功. 执行成功次数[%d], 预期下次执行时间[%s].", task.getTaskId(), robot.getRobotId(),
+                task.getRunTimes(), DateUtil.parseTimestamp(task.getExpectRunTime())); ;
+        actionLogService.registerActionLog(ActionLogEventEnum.RUN_TASK, null, robot.getTeamId(), robot.getRobotId(),
+                log);
     }
 
     /**
      * 计算下次执行时间
      *
-     * @param date             计算的起始时间
-     * @param schedule         执行周期
+     * @param date     计算的起始时间
+     * @param schedule 执行周期
      * @return 下次执行时间
      * @throws IOException IO异常
      */
