@@ -94,7 +94,7 @@ public class TaskServiceImpl implements TaskService {
         task.setGmtModify(BizContextHolder.getUnixTimestamp());
         taskDao.updateByPrimaryKeySelective(task);
 
-        String log = String.format("定时任务[%d]执行机器人[%d]任务成功. 执行成功次数[%d], 预期下次执行时间[%s].", task.getTaskId(), robot.getRobotId(),
+        String log = String.format("定时任务[%d: %s]执行机器人[%d]任务成功. 执行成功次数[%d], 预期下次执行时间[%s].", task.getTaskId(), task.getTaskName(), robot.getRobotId(),
                 task.getRunTimes(), DateUtil.parseTimestamp(task.getExpectRunTime())); ;
         actionLogService.registerActionLog(ActionLogEventEnum.RUN_TASK, null, robot.getTeamId(), robot.getRobotId(),
                 log);
