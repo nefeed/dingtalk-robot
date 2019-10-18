@@ -15,7 +15,7 @@ spring:
     proxy-target-class: true
     auto: true
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/dingtalk-robot
+    url: jdbc:mysql://127.0.0.1:3306/dingtalk-robot?useUnicode=true&characterEncoding=utf8
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -44,6 +44,11 @@ spring:
       # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
       connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
       use-global-data-source-stat: true
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
 mybatis:
   # 重要配置
   type-aliases-package: com.nefeed.dingtalkrobot.entity

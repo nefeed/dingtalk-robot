@@ -2,6 +2,7 @@ package com.nefeed.dingtalkrobot.utils;
 
 import com.alibaba.druid.util.StringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,7 +15,26 @@ public class DateUtil {
 
     private static final String DATE_FORMAT_NORMAL = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT_YMD = "yyyyMMdd";
+    public static final String DATE_FORMAT_LONG = "yyyyMMddhhmmssSSS";
     private static final SimpleDateFormat NORMAL_FORMAT = new SimpleDateFormat(DATE_FORMAT_NORMAL);
+
+    /**
+     * 将时间字符串转为Date
+     * @param date 时间字符串
+     * @return Date
+     */
+    public static Date parseDateStr(String date, String format) throws ParseException {
+        if (StringUtils.isEmpty(date)) {
+            return null;
+        }
+        if (StringUtils.isEmpty(format)) {
+            synchronized (NORMAL_FORMAT) {
+                return NORMAL_FORMAT.parse(date);
+            }
+        }
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+        return simpleDateFormat.parse(date);
+    }
 
     /**
      * 将Date转为默认的时间格式字符串

@@ -8,6 +8,19 @@ package com.nefeed.dingtalkrobot.constants;
  */
 public class DingtalkRobotConstants {
 
-    /** 系统的userId */
+    /**
+     * 日志跟踪id名。
+     */
+    public static final String LOG_TRACE_ID = "traceId";
+
+    /**
+     * 请求头跟踪id名。
+     */
+    public static final String HTTP_HEADER_TRACE_ID = "appTraceId";
+
+    /**
+     * 系统的userId
+     */
     public static final Integer SYSTEM_USER_ID = 0;
+
 }

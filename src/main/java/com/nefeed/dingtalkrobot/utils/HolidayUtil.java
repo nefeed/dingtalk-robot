@@ -3,6 +3,7 @@ package com.nefeed.dingtalkrobot.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nefeed.dingtalkrobot.enums.HolidayEnum;
+import com.nefeed.dingtalkrobot.pojo.response.TimorHolidayResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -52,15 +53,67 @@ public class HolidayUtil {
         if (holidayMap.containsKey(ymd)) {
             return holidayMap.get(ymd);
         }
-        return requestHolidayEnum(ymd);
+        HolidayEnum holidayEnum;
+        try {
+            holidayEnum = requestTimorHolidayEnum(ymd);
+        } catch (Exception e) {
+            // 通过GoSeekCN进行补偿
+            holidayEnum = requestGoSeekCNHolidayEnum(ymd);
+        }
+        return holidayEnum;
     }
 
     /**
-     * 请求公开接口获取节假日类型
+     * 请求Timor公开接口获取节假日类型
      * @param date 指定年月日
      * @return 节假日类型
      */
-    private static HolidayEnum requestHolidayEnum(String date) throws IOException {
+    private static HolidayEnum requestTimorHolidayEnum(String date) throws Exception {
+        StringBuilder sb = new StringBuilder();
+        sb.append(date, 0, 4).append("-").append(date, 4, 6).append( "-").append(date, 6, 8);
+        String httpUrl = "http://timor.tech/api/holiday/info/" + sb.toString();
+        String httpResult;
+        try {
+            httpResult = HttpUtil.get(httpUrl, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.error("请求Timor节假日信息异常!", e);
+            throw e;
+        }
+        TimorHolidayResponse timorHolidayResponse = JSON.parseObject(httpResult, TimorHolidayResponse.class);
+        if (timorHolidayResponse == null || 0 != timorHolidayResponse.getCode()
+        || timorHolidayResponse.getType() == null) {
+            String errMsg = String.format("Timor节假日内部处理异常, 连接:[%s], 返回:[%s]",
+                    httpUrl, httpResult);
+            log.error(errMsg);
+            throw new Exception(errMsg);
+        }
+        HolidayEnum holidayEnum;
+        if (timorHolidayResponse.getType().getType() == 0) {
+            holidayEnum = HolidayEnum.NORMAL_WORKDAY;
+        } else {
+            if (timorHolidayResponse.getHoliday() == null) {
+                holidayEnum = HolidayEnum.NORMAL_HOLIDAY;
+            } else {
+                if (timorHolidayResponse.getHoliday().isHoliday()) {
+                    holidayEnum = HolidayEnum.LEGAL_HOLIDAY;
+                } else {
+                    holidayEnum = HolidayEnum.LEGAL_WORKDAY;
+                }
+            }
+        }
+        holidayMap.put(date, holidayEnum);
+        log.info("获取Timor节假日类型成功，Map新增内容: ({}, {})", date, holidayEnum);
+        log.info("Timor节假日记录Map完整内容: [{}]", JSON.toJSONString(holidayMap));
+        return holidayEnum;
+    }
+
+    /**
+     * 请求GoSeekCN公开接口获取节假日类型
+     * @param date 指定年月日
+     * @return 节假日类型
+     */
+    private static HolidayEnum requestGoSeekCNHolidayEnum(String date) throws IOException {
         String httpUrl = "http://api.goseek.cn/Tools/holiday";
         JSONObject params = new JSONObject();
         params.put("date", date);
@@ -70,7 +123,7 @@ public class HolidayUtil {
             httpResult = HttpUtil.get(httpUrl, params);
         } catch (IOException e) {
             e.printStackTrace();
-            log.error("请求节假日信息异常!", e);
+            log.error("请求GoSeekCN节假日信息异常!", e);
             throw e;
         }
         JSONObject ob = JSONObject.parseObject(httpResult);
@@ -79,12 +132,12 @@ public class HolidayUtil {
         }
         HolidayEnum holidayEnum = HolidayEnum.getByValue(value);
         if (holidayEnum == null) {
-            log.error("获取节假日类型失败，枚举不包含value: {}", value);
+            log.error("获取GoSeekCN节假日类型失败，枚举不包含value: {}", value);
             return null;
         }
         holidayMap.put(date, holidayEnum);
-        log.info("获取节假日类型成功，Map新增内容: ({}, {})", date, holidayEnum);
-        log.info("节假日记录Map完整内容: [{}]", JSON.toJSONString(holidayMap));
+        log.info("获取GoSeekCN节假日类型成功，Map新增内容: ({}, {})", date, holidayEnum);
+        log.info("GoSeekCN节假日记录Map完整内容: [{}]", JSON.toJSONString(holidayMap));
         return holidayEnum;
     }
 

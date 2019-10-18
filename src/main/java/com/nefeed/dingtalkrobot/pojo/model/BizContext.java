@@ -1,13 +1,13 @@
 package com.nefeed.dingtalkrobot.pojo.model;
 
 import com.nefeed.dingtalkrobot.enums.ActionLogEventEnum;
+import com.nefeed.dingtalkrobot.utils.DateUtil;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * 业务上下文
@@ -24,8 +24,8 @@ public class BizContext implements Serializable {
     private Map<String, Object> context;
 
     public BizContext() {
-        this.traceId = UUID.randomUUID().toString();
         this.time = new Date();
+        this.traceId = DateUtil.parseDate(time, DateUtil.DATE_FORMAT_LONG) + ((int) ((Math.random() * 9 + 1) * 100000));
         this.context = new HashMap<>();
     }
 }

@@ -8,6 +8,7 @@ import com.nefeed.dingtalkrobot.enums.ActionLogEventEnum;
 import com.nefeed.dingtalkrobot.enums.ResultCodeEnum;
 import com.nefeed.dingtalkrobot.pojo.base.BaseResponse;
 import com.nefeed.dingtalkrobot.pojo.response.LoginResponse;
+import com.nefeed.dingtalkrobot.service.ActionLogService;
 import com.nefeed.dingtalkrobot.service.UserService;
 import com.nefeed.dingtalkrobot.utils.DateUtil;
 import com.nefeed.dingtalkrobot.utils.IpUtil;
@@ -39,6 +40,8 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ActionLogService actionLogService;
 
     @RequestMapping(value = {"/findUser"}, produces = {"application/json;charset=UTF-8"}, method = RequestMethod.GET)
     public UserInfo findUser(@RequestParam Integer id) {
@@ -65,11 +68,14 @@ public class UserController extends BaseController {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setLastLoginTime(userInfo.getLastLoginTime());
             loginResponse.setLastLoginIp(userInfo.getLastLoginIp());
-            LogUtil.info(ActionLogEventEnum.LOGIN, "登录成功: %s, 上次登录时间: %s, 上次登录IP: %s.",
-                    account, DateUtil.parseTimestamp(userInfo.getLastLoginTime()), userInfo.getLastLoginIp());
+            String log = String.format("用户%s[%s]登录成功, 上次登录时间: %s, 上次登录IP: %s.",
+            userInfo.getUsername(), account, DateUtil.parseTimestamp(userInfo.getLastLoginTime()), userInfo.getLastLoginIp());
+            LogUtil.info(ActionLogEventEnum.LOGIN, log);
             String accessToken = userService.loginSuccess(userInfo, IpUtil.getIpAddr(request));
             loginResponse.setAccessToken(accessToken);
             initSuccessResponse(loginResponse);
+            actionLogService.registerActionLog(ActionLogEventEnum.LOGIN, userInfo.getUserId(),
+                    null, null, log);
             return loginResponse;
         }
         LogUtil.warn(ActionLogEventEnum.LOGIN, "密码错误: %s.", account);

@@ -1,5 +1,6 @@
 package com.nefeed.dingtalkrobot.config;
 
+import com.alibaba.druid.filter.logging.Log4j2Filter;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -48,7 +49,6 @@ public class DruidConfiguration {
     /**
      * 注册一个：filterRegistrationBean
      *
-     * @return
      */
     @Bean
     public FilterRegistrationBean druidStatFilter() {
@@ -61,5 +61,19 @@ public class DruidConfiguration {
         filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
 
         return filterRegistrationBean;
+    }
+
+    /**
+     * 配置一个log filter
+     */
+    @Bean
+    public Log4j2Filter druidLogFilter() {
+        Log4j2Filter log4j2Filter = new Log4j2Filter();
+
+        log4j2Filter.setConnectionLogEnabled(false);
+        log4j2Filter.setStatementLogEnabled(false);
+        log4j2Filter.setResultSetLogEnabled(true);
+        log4j2Filter.setStatementExecutableSqlLogEnable(true);
+        return log4j2Filter;
     }
 }
