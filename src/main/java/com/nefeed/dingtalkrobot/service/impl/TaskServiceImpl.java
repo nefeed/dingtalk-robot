@@ -95,7 +95,8 @@ public class TaskServiceImpl implements TaskService {
         taskDao.updateByPrimaryKeySelective(task);
 
         String log = String.format("定时任务[%d: %s]执行机器人[%d]任务成功. 执行成功次数[%d], 预期下次执行时间[%s].", task.getTaskId(), task.getTaskName(), robot.getRobotId(),
-                task.getRunTimes(), DateUtil.parseTimestamp(task.getExpectRunTime())); ;
+                task.getRunTimes(), DateUtil.parseTimestamp(task.getExpectRunTime()));
+        LogUtil.info(ActionLogEventEnum.RUN_TASK, log);
         actionLogService.registerActionLog(ActionLogEventEnum.RUN_TASK, null, robot.getTeamId(), robot.getRobotId(),
                 log);
     }

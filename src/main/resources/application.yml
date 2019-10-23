@@ -8,16 +8,13 @@ devtools:
   restart:
     #是否支持热部署
     enabled: true
-logging:
-  config: classpath:log4j2-dev.xml
 spring:
+  profiles:
+    active: dev
   aop:
     proxy-target-class: true
     auto: true
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/dingtalk-robot?useUnicode=true&characterEncoding=utf8
-    username: root
-    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
