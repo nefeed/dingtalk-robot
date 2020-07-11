@@ -95,11 +95,20 @@ public class HolidayUtil {
 
 
         HolidayEnum holidayEnum = null;
-        if ("0".equals(httpResult)) {
+        int holiday = -1;
+        try {
+            httpResult = httpResult.replaceAll("\\s*|\t|\r|\n", "");
+            holiday = Integer.parseInt(httpResult);
+        } catch (NumberFormatException e) {
+            String errMsg = String.format("Kancloud节假日内返回非数字, 连接:[%s], 返回:[%s]",
+                    httpUrl, httpResult);
+            log.error(errMsg);
+        }
+        if (0 == holiday) {
             holidayEnum = HolidayEnum.NORMAL_WORKDAY;
-        } else if ("1".equals(httpResult)) {
+        } else if (1 == holiday) {
             holidayEnum = HolidayEnum.NORMAL_HOLIDAY;
-        } else if ("2".equals(httpResult)) {
+        } else if (2 == holiday) {
             holidayEnum = HolidayEnum.LEGAL_HOLIDAY;
         }
 
